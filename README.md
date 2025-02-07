@@ -15,9 +15,17 @@ This library aggregates the classes and methods contained in the Google librarie
 something that is easy, coherent and efficient to use.
 
 ## Usage
-To add the library to your project you will need to add GitHub packages
-to your 
-
+To add the library to your project you will need to add GitHub Packages repo
+to your pom.xml
+```
+<repositories>
+  <repository>
+    <id>github</id>
+    <name>GitHub Packages</name>
+    <url>https://public:&#103;hp_SOKl45mBX5qmCVjeXsy494bl7aXBQF48JSPx@maven.pkg.github.com/steveohara/*</url>
+  </repository>
+</repositories>
+```
 Maven
 ```
 <dependency>
