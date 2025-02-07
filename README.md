@@ -65,10 +65,8 @@ It will look for the file in the following places (in this order);
 Token management/refresh is all handled by the Google API Client.
 
 ## Development
-The application is a maven project with no external dependencies over and above those libraries defined
+The library is a maven project with no external dependencies over and above those libraries defined
 in the POM file.
-
-- `App.java`: main entry of the application
 
 ### Debugging Google Workspace APIs
 As mentioned earlier, all the Google APIs are machine generated from their RESTful counterparts which makes
