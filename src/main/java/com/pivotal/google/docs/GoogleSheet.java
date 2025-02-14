@@ -22,6 +22,7 @@ import java.util.*;
 
 /**
  * A metaphor for a Google sheet
+ * @noinspection ALL
  */
 @Slf4j
 @SuppressWarnings({"unused", "ResultOfMethodCallIgnored"})
@@ -358,6 +359,8 @@ public class GoogleSheet {
 
     /**
      * Appends text formatted as lines of CSV
+     * If rangeStart is null, then the data is appended to the end of the
+     * current data range
      *
      * @param rangeStart    Where to start to append the data from R1C1 notation
      * @param csvText       CSV data, line breaks
@@ -373,7 +376,7 @@ public class GoogleSheet {
             boolean firstRow = true;
             while ((values = reader.readNext()) != null) {
                 if (!firstRow || includeHeader) {
-                    rows.add(Arrays.asList((Object[]) values));
+                    rows.add(Arrays.asList(values));
                 }
                 firstRow = false;
             }
@@ -386,6 +389,8 @@ public class GoogleSheet {
 
     /**
      * Appends the Object values (single row) to the sheet
+     * If rangeStart is null, then the data is appended to the end of the
+     * current data range
      *
      * @param rangeStart Where to start to append the data from R1C1 notation
      * @param values     Array of Objects
@@ -399,6 +404,8 @@ public class GoogleSheet {
 
     /**
      * Appends the List of Lists of Object values to the sheet
+     * If rangeStart is null, then the data is appended to the end of the
+     * current data range
      *
      * @param rangeStart Where to start to append the data from R1C1 notation
      * @param values     List of List of Objects

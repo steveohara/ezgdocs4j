@@ -18,6 +18,7 @@ import java.util.*;
 
 /**
  * Provides a means to work with the rather horrible Google Sheets API
+ * @noinspection UnusedReturnValue
  */
 @SuppressWarnings("unused")
 @Slf4j

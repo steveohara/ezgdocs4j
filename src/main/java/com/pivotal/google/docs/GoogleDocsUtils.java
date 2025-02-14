@@ -34,6 +34,7 @@ public class GoogleDocsUtils {
 
     /**
      * Useful set of criteria types when building FilterCriteria
+     * @noinspection unused
      */
     public enum BooleanCriteriaType {
         CELL_EMPTY, // The criteria is met when a cell is empty.
