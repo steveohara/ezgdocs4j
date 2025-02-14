@@ -190,6 +190,12 @@
                 <configuration>
                     <quiet>true</quiet>
                     <show>public</show>
+                    <tags>
+                        <tag>
+                            <name>noinspection</name>
+                            <placement>X</placement>
+                        </tag>
+                    </tags>
                 </configuration>
                 <executions>
                     <execution>
