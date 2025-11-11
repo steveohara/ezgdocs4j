@@ -31,6 +31,7 @@ public class GoogleDocsUtils {
     public static final int MAX_RATE_LIMIT_RETRIES = 10;
     public static final int GAPI_RETRY_ERROR_CODE = 429;
     public static final double MAXIMUM_RETRY_SLEEP = 32000.0;
+    public static final int MAX_PAYLOAD_SIZE = 10000000; // 10MB
 
     /**
      * Useful set of criteria types when building FilterCriteria

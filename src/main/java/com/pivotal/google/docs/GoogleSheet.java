@@ -22,6 +22,7 @@ import java.util.*;
 
 /**
  * A metaphor for a Google sheet
+ *
  * @noinspection ALL
  */
 @Slf4j
@@ -78,6 +79,9 @@ public class GoogleSheet {
         DATE_TIME, // Date+Time formatting, e.g 9/26/08 15:59:00
         SCIENTIFIC // Scientific number formatting, e.g 1.01E+03
     }
+
+    // Default size of batch rows when appending data
+    public static final int DEFAULT_BATCH_ROWS = 5000;
 
     /**
      * Creates a GoogleSheet object belonging to the specified spreadsheet
@@ -412,16 +416,54 @@ public class GoogleSheet {
      * @throws GoogleException If the spreadsheet cannot be opened/found
      */
     public void appendValues(String rangeStart, List<List<Object>> values) throws GoogleException {
+        appendValues(rangeStart, values, DEFAULT_BATCH_ROWS);
+    }
+
+    /**
+     * Appends the List of Lists of Object values to the sheet
+     * If rangeStart is null, then the data is appended to the end of the
+     * current data range
+     * The bath size specifies how many rows to append in each batch to avoid
+     * exceeding the POST size limit
+     *
+     * @param rangeStart Where to start to append the data from R1C1 notation
+     * @param values     List of List of Objects
+     * @param batchSize  Size of each batch to append
+     * @throws GoogleException If the spreadsheet cannot be opened/found
+     */
+    public void appendValues(String rangeStart, List<List<Object>> values, int batchSize) throws GoogleException {
         Sheets.Spreadsheets.Values valuesService = GoogleServiceFactory.getSheetsService().values();
         try {
-            Sheets.Spreadsheets.Values.Append append = valuesService.append(spreadsheetId, name + (rangeStart == null ? "" : ("!" + rangeStart)), new ValueRange().setValues(values));
-            append.setValueInputOption("USER_ENTERED");
-            append.setIncludeValuesInResponse(false);
-            append.execute();
+            // There is a limit on the POST size (134217728), so we may need to split this into multiple appends
+            boolean first = true;
+            while (values.size() > 0) {
+                batchSize = Math.min(values.size(), batchSize);
+                log.debug("Appending batch of {} rows of {} left", batchSize, values.size());
+                List<List<Object>> batchValues = values.subList(0, batchSize);
+                appendValuesBatch(valuesService, first ? rangeStart : null, batchValues);
+                values.subList(0, batchSize).clear();
+                first = false;
+            }
         }
         catch (IOException e) {
-            throw new GoogleException("Cannot append data to %s at location %s", e, name, rangeStart);
+            throw new GoogleException("Cannot append data to %s at location %s - %s", e, name, rangeStart, e.getLocalizedMessage());
         }
+    }
+
+    /**
+     * Appends a batch of values to the sheet
+     *
+     * @param valuesService Values service to use
+     * @param rangeStart    Where to start to append the data from R1C1 notation
+     * @param batchValues   List of List of Objects
+     * @throws IOException If the append fails
+     */
+    private void appendValuesBatch(Sheets.Spreadsheets.Values valuesService, String rangeStart, List<List<Object>> batchValues) throws IOException {
+        log.debug("Appending {} rows starting at {}", batchValues.size(), rangeStart == null ? "last row" : rangeStart);
+        Sheets.Spreadsheets.Values.Append append = valuesService.append(spreadsheetId, name + (rangeStart == null ? "" : ("!" + rangeStart)), new ValueRange().setValues(batchValues));
+        append.setValueInputOption("USER_ENTERED");
+        append.setIncludeValuesInResponse(false);
+        append.execute();
     }
 
     /**
