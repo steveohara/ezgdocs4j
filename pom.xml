@@ -12,7 +12,7 @@
 
     <groupId>com.pivotal-solutions</groupId>
     <artifactId>ezgdocs4j</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.6</version>
     <organization>
         <name>Pivotal Solutions Ltd</name>
         <url>https://www.pivotal-solutions.co.uk</url>
@@ -28,7 +28,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
         <exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
-        <google.java.sdk.version>26.50.0</google.java.sdk.version>
+        <google.java.sdk.version>26.72.0</google.java.sdk.version>
         <slf4j.version>1.7.28</slf4j.version>
         <junit5.version>5.8.1</junit5.version>
         <app.main.class>com.pivotal.App</app.main.class>
@@ -41,7 +41,7 @@
             <name>Steve O'Hara</name>
             <email>sohara@pivotal-solutions.co.uk</email>
             <organization>Pivotal Solutions</organization>
-            <organizationUrl>http://www.pivotal-solutions.co.uk</organizationUrl>
+            <organizationUrl>https://www.pivotal-solutions.co.uk</organizationUrl>
             <roles>
                 <role>developer</role>
             </roles>
@@ -51,7 +51,7 @@
     <licenses>
         <license>
             <name>The Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
 
