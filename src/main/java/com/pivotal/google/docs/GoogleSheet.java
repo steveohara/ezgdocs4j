@@ -435,14 +435,12 @@ public class GoogleSheet {
         Sheets.Spreadsheets.Values valuesService = GoogleServiceFactory.getSheetsService().values();
         try {
             // There is a limit on the POST size (134217728), so we may need to split this into multiple appends
-            boolean first = true;
-            while (values.size() > 0) {
-                batchSize = Math.min(values.size(), batchSize);
+            int start = 0;
+            while (start < values.size()) {
+                batchSize = Math.min(values.size() - start, batchSize);
                 log.debug("Appending batch of {} rows of {} left", batchSize, values.size());
-                List<List<Object>> batchValues = values.subList(0, batchSize);
-                appendValuesBatch(valuesService, first ? rangeStart : null, batchValues);
-                values.subList(0, batchSize).clear();
-                first = false;
+                appendValuesBatch(valuesService, start == 0 ? rangeStart : null, values, start, batchSize);
+                start += batchSize;
             }
         }
         catch (IOException e) {
@@ -456,10 +454,13 @@ public class GoogleSheet {
      * @param valuesService Values service to use
      * @param rangeStart    Where to start to append the data from R1C1 notation
      * @param batchValues   List of List of Objects
+     * @param start         Start index within values
+     * @param length        Length of batch
      * @throws IOException If the append fails
      */
-    private void appendValuesBatch(Sheets.Spreadsheets.Values valuesService, String rangeStart, List<List<Object>> batchValues) throws IOException {
-        log.debug("Appending {} rows starting at {}", batchValues.size(), rangeStart == null ? "last row" : rangeStart);
+    private void appendValuesBatch(Sheets.Spreadsheets.Values valuesService, String rangeStart, List<List<Object>> values, int start, int length) throws IOException {
+        log.debug("Appending {} rows starting at {}", length - start, rangeStart == null ? "last row" : rangeStart);
+        List<List<Object>> batchValues = values.subList(start, start + length);
         Sheets.Spreadsheets.Values.Append append = valuesService.append(spreadsheetId, name + (rangeStart == null ? "" : ("!" + rangeStart)), new ValueRange().setValues(batchValues));
         append.setValueInputOption("USER_ENTERED");
         append.setIncludeValuesInResponse(false);

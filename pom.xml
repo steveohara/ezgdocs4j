@@ -12,7 +12,7 @@
 
     <groupId>com.pivotal-solutions</groupId>
     <artifactId>ezgdocs4j</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <organization>
         <name>Pivotal Solutions Ltd</name>
         <url>https://www.pivotal-solutions.co.uk</url>
